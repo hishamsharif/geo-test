@@ -1,0 +1,29 @@
+version: "3"
+
+# ------------------------------------------------------------------------------
+# These images must be built in advance, or docker-compose will build them.
+# ------------------------------------------------------------------------------
+
+services:
+  # Oracle Database service
+  db:
+    image: oracle-xe:18c
+    container_name: oracle-xe
+    # Use persistent volume of your choice.
+    volumes:
+      - files/data:/opt/oracle/oradata
+    environment:
+      - SYS_PASSWORD=Oracle18
+      - PDB_PASSWORD=Oracle18
+      - APEX_EMAIL=me@example.com
+      - APEX_PASSWORD=ApexPassword1
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    networks:
+      - ora_net
+    restart: unless-stopped
+volumes:
+  data:
+networks:
+  ora_net:

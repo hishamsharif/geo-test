@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<title>Polygon Marker on Map</title>
+
+<style>
+/* Always set the map height explicitly to define the size of the div
+		       * element that contains the map. */
+#map {
+	height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.row>button {
+	flex-basis: 40%;
+}
+
+.polygon-container {
+	min-height: 150px;
+	margin: 1em;
+	border: solid 0.1em;
+	border-radius: 1.1em;
+}
+
+#map, #form {
+	flex-basis: 100%;
+}
+
+@media screen and (min-width: 800px) {
+	#form {
+		flex: 3;
+	}
+	#map {
+		flex: 7;
+	}
+}
+</style>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="js/services/api-services.js"></script>
+<script src="js/services/map-services.js"></script>
+<script src="js/services/form-services.js"></script>
+
+
+</head>
+
+<body>
+
+
+	<div id="map">No Map Yet</div>
+	<div id="form">
+
+
+		<form method="post" id="myForm">
+			<div class="row">
+				<label>Selected Polygon Geometry:</label>
+			</div>
+			<div class="row polygon-container">
+				<div id="geometry"></div>
+			</div>
+			<div class="row">
+				<button type="button" id="clearBtn">Clear Polygon Selection</button>
+				<button type="button" id="submitBtn">Submit Form</button>
+			</div>
+			<div class="row">
+				<div id="saved-results"></div>
+			</div>
+		</form>
+
+	</div>
+
+	<!-- Replace the value of the key parameter with your own API key. -->
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZeUZB5-38cGcNYsIZEcNeygEj4g5uEik&libraries=drawing&callback=showMap">		
+		</script>
+
+
+</body>
+</html>

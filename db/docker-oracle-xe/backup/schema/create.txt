@@ -1,0 +1,64 @@
+
+sqlplus sys/Oracle18@localhost:1521/xe as sysdba
+sqlplus sys/Oracle18@localhost:1521/geodb as sysdba
+sqlplus hisham/123@localhost:1521/geodb
+
+GRANT INHERIT PRIVILEGES ON USER SYS TO PUBLIC; 
+GRANT INHERIT PRIVILEGES ON USER SYS TO hisham
+GRANT create table, create sequence to hisham;
+select default_tablespace from dba_users where  username = 'HISHAM';
+SELECT SYS_CONTEXT ('USERENV', 'SID') FROM DUAL;
+SELECT SYS_CONTEXT ('USERENV', 'SERVICE_NAME') FROM DUAL;
+SELECT SYS_CONTEXT ('USERENV', 'CURRENT_SCHEMA') FROM DUAL;
+SELECT SYS_CONTEXT ('USERENV', 'SESSION_USER') FROM DUAL;
+
+
+xxx create another pdb xxxx
+CREATE PLUGGABLE DATABASE GEOPDB 
+  ADMIN USER app IDENTIFIED BY password
+  STORAGE (MAXSIZE 2G)
+  DEFAULT TABLESPACE sales 
+    DATAFILE '/opt/oracle/oradata/XE/GEOPDB/geo01.dbf' SIZE 250M AUTOEXTEND ON
+  PATH_PREFIX = '/opt/oracle/oradata/XE/GEOPDB/'
+  FILE_NAME_CONVERT = ('/opt/oracle/oradata/XE/pdbseed/', '/opt/oracle/oradata/XE/GEOPDB/');
+
+create user appeaser identified by 123;
+ALTER USER APP DEFAULT ROLE ALL;
+
+select vp.name, vp.open_mode
+from v$pdbs vp;
+
+alter pluggable database GEOPDB open read write;
+alter pluggable database all save state;
+
+sqlplus app/password@localhost:1521/geopdb
+
+xxx end::create another pdb xxxx
+
+
+-- Note XEPDB1 is created by default so demoing with GEODB
+
+create pluggable database GEODB admin user hisham identified by 123 file_name_convert=('/opt/oracle/oradata/XE/pdbseed', '/opt/oracle/oradata/XE/GEODB');
+q	`	
+
+-- Running the following query will show the newly created PDBs but they are not open for Read Write:
+
+
+;;
+
+-- Open the PDB
+alter pluggable database GEODB open read write;
+
+-- If nothing is changed the PDBs won't be loaded on boot.
+-- They're a few ways to do this
+-- See for reference https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:9531671900346425939
+-- alter pluggable database pdb_name save state;
+-- alter pluggable database all save state;
+-- alter pluggable database all except pdb$seed open read write
+
+alter pluggable database all save state;
+
+
+
+
+
