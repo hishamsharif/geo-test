@@ -21,9 +21,12 @@ import com.nwsstechsol.geo.util.json.GeoJSONConverterUtil;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("api/geo/location")
 @CrossOrigin
+@Slf4j
 public class GeoLocationController {
 
 	@Autowired
@@ -35,7 +38,7 @@ public class GeoLocationController {
 	public ResponseEntity<Void> addPolygon(@RequestBody Map<String, Object> geometryMap, UriComponentsBuilder builder) {
 
 		// loog GeoJSON request
-		System.out.println("GeoJSON request:: " + geometryMap.get("coordinates"));
+		log.info("addPolygon GeoJSON request:: " + geometryMap.get("coordinates"));
 
 		String name = "Test-Polygon"; // TODO may need to name this polygon in the web map view
 		Polygon polygon = new GeoJSONConverterUtil().createPolygonFromGeoJson(name, geometryMap);
@@ -55,7 +58,7 @@ public class GeoLocationController {
 		Point p = new GeoJSONConverterUtil().createPointGeometry(Double.valueOf(longitude), Double.valueOf(latitude));
 		org.wololo.geojson.Geometry polyOfGivenPoint = geoLocationService.findLocationsWithin(p);
 
-		System.out.println("findPolygonOfGivenPoint::response::" + polyOfGivenPoint);
+		log.info("findPolygonOfGivenPoint GeoJSON response::" + polyOfGivenPoint);
 
 		return new ResponseEntity<org.wololo.geojson.Geometry>(polyOfGivenPoint, HttpStatus.OK);
 

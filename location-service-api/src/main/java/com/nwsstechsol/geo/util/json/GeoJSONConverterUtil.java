@@ -13,6 +13,9 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GeoJSONConverterUtil {
 	
 	private GeometryFactory getGeometryFactory() throws ParseException {
@@ -48,9 +51,9 @@ public class GeoJSONConverterUtil {
 		try {
 			polygon = getGeometryFactory().createPolygon(coordinates);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("error while parsing createPolygon ::" + e);
-			e.printStackTrace();
+			
+			log.error("error while parsing createPolygon ::" , e);
+			
 		}
 
 		Map<String, Object> attributes = new LinkedHashMap<>();
@@ -76,9 +79,9 @@ public class GeoJSONConverterUtil {
 		try {
 			point = getGeometryFactory().createPoint(coordinate);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("error while parsing createPoint ::" + e);
-			e.printStackTrace();
+			
+			log.error("error while parsing createPoint ::" , e);
+			
 		}
 
 		

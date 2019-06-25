@@ -15,7 +15,10 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class GeoLocationService {
 
 	@Autowired
@@ -40,7 +43,7 @@ public class GeoLocationService {
 		List<RegionBoundary> list = regionBoundaryRepository.findByShape(regionBoundary.getShape());
 
 		if (list.size() > 0) {
-			System.out.println("Already polygon exists- id::" + list.get(0).getId() + "  name::" + list.get(0).getName()
+			log.info("Already polygon exists- id::" + list.get(0).getId() + "  name::" + list.get(0).getName()
 					+ "  " + list.get(0).getShape().getGeometryType() + "::"
 					+ Arrays.toString(list.get(0).getShape().getCoordinates()));
 			return list.get(0).getId();
@@ -68,11 +71,11 @@ public class GeoLocationService {
 				return geometeryJSON;
 
 			} catch (Exception e) {
-				System.out.println("error creating json object: " + e.toString());
+				log.error("error creating json object: " , e);
 			}
 
 		} else {
-			System.out.println(" NOT received results ");
+			log.info(" NOT received results for input (point) "+location.toText());
 
 		}
 
