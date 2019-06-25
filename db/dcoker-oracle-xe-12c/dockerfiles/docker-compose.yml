@@ -1,0 +1,32 @@
+version: "3"
+
+# ------------------------------------------------------------------------------
+# These images must be built in advance, or docker-compose will build them.
+# ------------------------------------------------------------------------------
+
+services:
+  # Oracle Database service
+  db:
+    image: oracle/database:12.2.0.1-ee
+    shm_size: "2gb"
+    container_name: oracle-ee-12c
+    # Use persistent volume of your choice.
+    volumes:
+      - ../data:/opt/oracle/oradata
+      - ../scripts/setup:/opt/oracle/scripts/setup
+
+    environment:
+      - ORACLE_PWD=123
+      - PDB_PASSWORD=123
+      - ORACLE_SID=geo
+      - ORACLE_PDB=geopdb
+    ports:
+      - 1521:1521
+      - 8085:8080
+      - 5500:5500
+    networks:
+      - ora_net
+    restart: unless-stopped
+
+networks:
+  ora_net:
