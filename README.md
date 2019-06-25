@@ -1,7 +1,3 @@
-# geo-test
-
-GeoFencing Test
-
 # GeoFencing Test
 
 ## Table of Contents
